@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Ready Bootstrap Dashboard</title>
+    <title>NgideDikit - Admin</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
     <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
@@ -11,14 +11,18 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="{{ asset('admin/css/ready.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/demo.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 </head>
 
 <body>
     <div class="wrapper">
-        @include('layouts.navbar')
+        <div class="main-header">
+            @include('layouts.admin.navbar')
 
-        @include('layouts.sidebar')
-        <div class="main-panel">
+            @include('layouts.admin.sidebar')
+
             <div class="main-panel">
                 <div class="content">
                     <div class="container-fluid">
@@ -27,9 +31,9 @@
 
                     </div>
                 </div>
-            @include('layouts.footer')
+                @include('layouts.admin.footer')
+            </div>
         </div>
-    </div>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdatePro"
@@ -61,7 +65,6 @@
 <script src="{{ asset('admin/js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugin/chartist/chartist.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js') }}"></script>
-<script src="{{ asset('admin/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugin/jquery-mapael/jquery.mapael.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugin/jquery-mapael/maps/world_countries.min.js') }}"></script>
@@ -69,5 +72,10 @@
 <script src="{{ asset('admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 <script src="{{ asset('admin/js/ready.min.js') }}"></script>
 <script src="{{ asset('admin/js/demo.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+@yield('scripts')
 
 </html>
