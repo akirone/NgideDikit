@@ -9,12 +9,9 @@ use Illuminate\Http\Request;
 
 class IdeController extends Controller
 {
-    /**
-     * Menampilkan semua ide.
-     */
     public function index(Request $request)
     {
-        $query = \App\Models\Ide::with('categories');
+        $query = Ide::with('categories');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -24,15 +21,12 @@ class IdeController extends Controller
                 });
         }
 
-        $ide = $query->get();
-        $kategori = \App\Models\Kategori::all();
+        $ide = $query->paginate(10);
+        $kategori = Kategori::all();
 
         return view('ideas.index', compact('ide', 'kategori'));
     }
 
-    /**
-     * Menyimpan ide baru ke database.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -55,20 +49,6 @@ class IdeController extends Controller
         return redirect()->route('ideas.index')->with('success', 'Ide berhasil ditambahkan!');
     }
 
-    /**
-     * Form untuk edit ide.
-     */
-    public function edit($id)
-    {
-        $idea = Ide::with('categories')->findOrFail($id);
-        $kategori = Kategori::all();
-
-        return view('ideas.edit', compact('idea', 'kategori'));
-    }
-
-    /**
-     * Update ide di database.
-     */
     public function update(Request $request, $id)
     {
         $idea = Ide::findOrFail($id);
@@ -92,9 +72,6 @@ class IdeController extends Controller
         return redirect()->route('ideas.index')->with('success', 'Idea berhasil diperbarui!');
     }
 
-    /**
-     * Menghapus ide dari database.
-     */
     public function destroy($id)
     {
         $idea = Ide::findOrFail($id);

@@ -26,11 +26,11 @@
     <link href="user/css/main.css" rel="stylesheet">
 </head>
 
-<section class="container-fluid d-flex justify-content-center align-items-center bg-success" style="min-height: 100vh;"
+<section class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;"
     id="login">
-    <div class="card shadow rounded-4 p-4 w-100" style="max-width: 450px;">
+    <div class="border border-2 border-success shadow mb-5 bg-body-tertiary rounded rounded-4 p-4 w-100" style="max-width: 370px;">
         <div class="text-center mb-4">
-            <h1 class="fw-bold mb-2">Register</h1>
+            <h2 class="fw-bold mb-2">Register</h2>
             <p class="text-muted mb-0">Silakan membuat akun terlebih dulu</p>
         </div>
         <form action="{{ route('do-Register') }}" method="POST">

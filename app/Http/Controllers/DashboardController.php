@@ -4,69 +4,101 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Ide;
+use App\Models\Kategori;
+use App\Models\UserIdea;
+use App\Models\IdeKategori;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::select('id', 'name')->get();
-        $selectedUser = $request->query('user') ? User::with(['orders','tasks'])->findOrFail($request->query('user')) : User::with(['orders','tasks'])->first();
+        // Statistik dasar
+        $totalUsers = User::count();
+        $totalKategori = Kategori::count();
+        $totalIde = Ide::count();
+        $totalFavorites = Ide::where('is_favorite', true)->count();
 
-        // prepare initial data for the selected user
-        $data = $this->makeProgressData($selectedUser);
+        // Data users untuk tabel (limit 5 user terbaru)
+        $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('dashboard', compact('users','selectedUser','data'));
-    }
+        // Semua users untuk dropdown
+        $allUsers = User::orderBy('name')->get();
 
-    public function userProgress(User $user)
-    {
-        $user->load(['orders','tasks']);
-        $data = $this->makeProgressData($user);
+        // User yang dipilih (default user pertama jika tidak ada pilihan)
+        $selectedUserId = $request->get('user_id');
+        $selectedUser = $selectedUserId ? User::find($selectedUserId) : User::first();
 
-        return response()->json($data);
-    }
+        // Statistik user yang dipilih
+        if ($selectedUser) {
+            // Hitung ide yang dibuat user
+            $userIdeCount = UserIdea::where('user_id', $selectedUser->id)->count();
 
-    protected function makeProgressData(?User $user)
-    {
-        if (! $user) {
-            return [
-                'balance' => 0,
-                'profit_amount' => 0,
-                'profit_percent' => 0,
-                'orders_count' => 0,
-                'orders_percent' => 0,
-                'tasks_complete_percent' => 0,
-                'open_rate_percent' => 0,
-                'name' => '—'
-            ];
+            // Hitung ide favorit user (menggunakan join)
+            $userFavoriteCount = UserIdea::where('user_ideas.user_id', $selectedUser->id)
+                ->join('ideas', 'user_ideas.idea_id', '=', 'ideas.id')
+                ->where('ideas.is_favorite', true)
+                ->count();
+
+            // Progress user
+            $userIdeTarget = 20; // target 20 ide per user
+            $userIdePercent = min(100, round(($userIdeCount / $userIdeTarget) * 100));
+            $userFavoritePercent = $userIdeCount > 0 ? round(($userFavoriteCount / $userIdeCount) * 100) : 0;
+
+            // Kategori yang digunakan user
+            $userKategoriCount = IdeKategori::whereIn('idea_id', function ($query) use ($selectedUser) {
+                $query->select('idea_id')
+                    ->from('user_ideas')
+                    ->where('user_id', $selectedUser->id);
+            })->distinct('category_id')->count('category_id');
+            $userKategoriPercent = $totalKategori > 0 ? round(($userKategoriCount / $totalKategori) * 100) : 0;
+
+            // Activity rate (ide per hari sejak terdaftar)
+            $daysSinceJoined = $selectedUser->created_at ? max(1, $selectedUser->created_at->diffInDays(now())) : 1;
+            $activityRate = round($userIdeCount / $daysSinceJoined, 2);
+            $activityPercent = min(100, round($activityRate * 50)); // 2 ide/hari = 100%
+        } else {
+            $userIdeCount = 0;
+            $userFavoriteCount = 0;
+            $userIdePercent = 0;
+            $userFavoritePercent = 0;
+            $userKategoriCount = 0;
+            $userKategoriPercent = 0;
+            $activityRate = 0;
+            $activityPercent = 0;
         }
 
-        // Example targets (ubah sesuai kebutuhan)
-        $profitTarget = 3000;
-        $ordersTarget = 800; // contoh target orders
+        // Hitung persentase progress global
+        $favoritePercent = $totalIde > 0 ? round(($totalFavorites / $totalIde) * 100) : 0;
+        $kategoriTarget = 20;
+        $kategoriPercent = min(100, round(($totalKategori / $kategoriTarget) * 100));
+        $ideTarget = 100;
+        $idePercent = min(100, round(($totalIde / $ideTarget) * 100));
+        $userTarget = 50;
+        $userPercent = min(100, round(($totalUsers / $userTarget) * 100));
+        $taskComplete = $totalIde > 0 ? round(($totalFavorites / $totalIde) * 100) : 0;
 
-        $profitAmount = (float) ($user->profit_amount ?? 0);
-        $profitPercent = $profitTarget > 0 ? (int) min(100, round($profitAmount / $profitTarget * 100)) : 0;
-
-        $ordersCount = $user->orders ? $user->orders->count() : 0;
-        $ordersPercent = $ordersTarget > 0 ? (int) min(100, round($ordersCount / $ordersTarget * 100)) : 0;
-
-        $tasksTotal = $user->tasks ? $user->tasks->count() : 0;
-        $tasksComplete = $user->tasks ? $user->tasks->where('status', 'complete')->count() : 0;
-        $tasksCompletePercent = $tasksTotal > 0 ? (int) round($tasksComplete / $tasksTotal * 100) : 0;
-
-        $openRate = (int) ($user->open_rate ?? 0);
-        $openRatePercent = max(0, min(100, $openRate));
-
-        return [
-            'name' => $user->name,
-            'balance' => number_format($user->balance ?? 0, 2),
-            'profit_amount' => $profitAmount,
-            'profit_percent' => $profitPercent,
-            'orders_count' => $ordersCount,
-            'orders_percent' => $ordersPercent,
-            'tasks_complete_percent' => $tasksCompletePercent,
-            'open_rate_percent' => $openRatePercent,
-        ];
+        return view('dashboard', compact(
+            'totalUsers',
+            'totalKategori',
+            'totalIde',
+            'totalFavorites',
+            'recentUsers',
+            'allUsers',
+            'selectedUser',
+            'userIdeCount',
+            'userFavoriteCount',
+            'userIdePercent',
+            'userFavoritePercent',
+            'userKategoriCount',
+            'userKategoriPercent',
+            'activityRate',
+            'activityPercent',
+            'favoritePercent',
+            'kategoriPercent',
+            'idePercent',
+            'userPercent',
+            'taskComplete'
+        ));
     }
 }

@@ -8,10 +8,9 @@
                 <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita
                     valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
                 <div class="social-links d-flex mt-4">
-                    <a href="#"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://www.tiktok.com/@gierrrrgr?is_from_webapp=1&sender_device=pc"><i class="bi bi-tiktok"></i></a>
+                    <a href="https://www.instagram.com/nt.grr?igsh=MXEyd3U2dXphMTY2MQ=="><i class="bi bi-instagram"></i></a>
+                    <a href="https://discordapp.com/users/1343864460745641994"><i class="bi bi-discord"></i></a>
                 </div>
             </div>
 

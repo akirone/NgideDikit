@@ -27,6 +27,7 @@
 
     <!-- Main CSS File -->
     <link href="user/css/main.css" rel="stylesheet">
+    @yield('css')
 </head>
 
 <body class="index-page">
@@ -35,28 +36,8 @@
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
             <a href="/" class="logo d-flex align-items-center">
-                <svg class="my-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="bgCarrier" stroke-width="0"></g>
-                    <g id="tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="iconCarrier">
-                        <path d="M22 22L2 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-                        <path
-                            d="M2 11L6.06296 7.74968M22 11L13.8741 4.49931C12.7784 3.62279 11.2216 3.62279 10.1259 4.49931L9.34398 5.12486"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-                        <path d="M15.5 5.5V3.5C15.5 3.22386 15.7239 3 16 3H18.5C18.7761 3 19 3.22386 19 3.5V8.5"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-                        <path d="M4 22V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-                        <path d="M20 9.5V13.5M20 22V17.5" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round"></path>
-                        <path
-                            d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393M9 22V17"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                        <path
-                            d="M14 9.5C14 10.6046 13.1046 11.5 12 11.5C10.8954 11.5 10 10.6046 10 9.5C10 8.39543 10.8954 7.5 12 7.5C13.1046 7.5 14 8.39543 14 9.5Z"
-                            stroke="currentColor" stroke-width="1.5"></path>
-                    </g>
-                </svg>
+                <img src="{{ asset('user/img/lampu_ajaib.png') }}" alt="Idea Bulb" class="my-icon"
+                    style="width: 40px; height: 40px;">
                 <h1 class="sitename">NgideDikit</h1>
             </a>
             @include('layouts.user.navbar')
@@ -100,6 +81,9 @@
             navmenu.classList.toggle('active');
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    @yield('scripts')
 
 </body>
 

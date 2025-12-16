@@ -1,14 +1,17 @@
 <nav id="navmenu" class="navmenu">
     <ul>
-        <li class="nav-item">
-            <a href="#home" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-            <a href="#tentang" class="nav-link">Tentang</a>
-        </li>
-        <li class="nav-item">
-            <a href="#contact" class="nav-link">Hubungi Saya</a>
-        </li>
+        @if (Request::is('/') || Request::is('welcome'))
+            <li class="nav-item">
+                <a href="#home" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#tentang" class="nav-link">Tentang</a>
+            </li>
+            <li class="nav-item">
+                <a href="#contact" class="nav-link">Hubungi Saya</a>
+            </li>
+        @endif
+
         @guest
             <li class="nav-item">
                 <a href="/login" class="nav-link">Login</a>
@@ -17,7 +20,7 @@
 
         @auth
             <li class="nav-item dropdown">
-                <a class="nav-link d-flex align-items-center dropdown-toggle" href="#" id="navbarUserDropdown"
+                <a class="nav-link d-flex align-items-center nav-profile-link" href="#" id="navbarUserDropdown1"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ asset('admin/img/profile.jpg') }}" alt="user-img" width="36" class="rounded-circle">
                     <span class="ms-2">{{ Auth::user()->name }}</span>
@@ -41,7 +44,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a href="#" class="dropdown-item"
+                        <a href="javascript:void(0);" class="dropdown-item"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout
                         </a>
@@ -52,7 +55,29 @@
                 </ul>
             </li>
         @endauth
+
     </ul>
 
     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+
 </nav>
+
+<style>
+    .nav-profile-link {
+        transition: none;
+        background-color: transparent;
+        color: inherit;
+    }
+
+    .nav-profile-link:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+        text-decoration: none !important;
+        transform: none !important;
+    }
+
+    .nav-profile-link:focus {
+        background-color: transparent !important;
+        outline: none !important;
+    }
+</style>

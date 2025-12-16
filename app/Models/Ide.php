@@ -15,10 +15,11 @@ class Ide extends Model
         'title',
         'description',
         'category',
+        'is_favorite',
     ];
 
     public function categories()
     {
-        return $this->belongstoMany(Kategori::class, 'kategori_idea', 'idea_id' , 'category_id');
+        return $this->belongstoMany(Kategori::class, 'kategori_idea', 'idea_id', 'category_id');
     }
 }

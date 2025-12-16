@@ -13,4 +13,14 @@ class UserIdea extends Pivot
         'idea_id',
         'is_favorited',
     ];
+
+    public function idea()
+    {
+        return $this->belongsTo(Ide::class, 'idea_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

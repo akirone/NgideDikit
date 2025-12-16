@@ -9,7 +9,7 @@ class KategoriController extends Controller
 {
     public function index(Request $request)
     {
-        $query = \App\Models\Kategori::query();
+        $query = Kategori::query();
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%')
@@ -33,18 +33,6 @@ class KategoriController extends Controller
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
-    /**
-     * Menampilkan form edit kategori
-     */
-    public function edit($id)
-    {
-        $kategori = Kategori::findOrFail($id);
-        return view('kategori.edit', compact('kategori'));
-    }
-
-    /**
-     * Update data kategori
-     */
     public function update(Request $request, $id)
     {
         $kategori = Kategori::findOrFail($id);
@@ -59,9 +47,6 @@ class KategoriController extends Controller
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
-    /**
-     * Menghapus kategori
-     */
     public function destroy($id)
     {
         $kategori = Kategori::findOrFail($id);

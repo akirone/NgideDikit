@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('admin/css/ready.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/demo.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
@@ -31,7 +33,13 @@
 
                     </div>
                 </div>
-                @include('layouts.admin.footer')
+                @hasSection('hide.footer')
+                    @if (!View::hasSection('hide.footer'))
+                        @include('layouts.admin.footer')
+                    @endif
+                @else
+                    @include('layouts.admin.footer')
+                @endif
             </div>
         </div>
     </div>
